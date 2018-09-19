@@ -42,31 +42,61 @@
 #You can travel: (N)orth or (S)outh.
 #Direction: S
 #Victory!
-row = 3
-column = 2
-msg = "You can travel:"
+
+#Finna hvaða leiðir eru í boði (sett fram miðað við röð og dálk).
+#Finna hvort innslegin átt stemmi við þá átt sem er í boði.
+#Breyta staðsetningu miðað við þá átt sem var valin.
+#Forritið hættir að keyra þegar notandi er kominn í línu 1, dálk 3.
+#https://github.com/margretsg/tiletraveller
+row = 1
+column = 1
+direct = "You can travel: "
+base_length = len(direct)
 #Find available directions
-#tiles that allow travel north
-if row == 1 or (row == 2 and column == 1) or (row == 2 and column == 3)  :
-    msg += "(N)orth"
-
-#tiles that allow travel south
-if row != 1 and not(row == 3 and column == 2):
-    msg += " or (S)outh"
-
-#tiles that allow travel east   
-if (row == 2 and column == 1) or (row == 3 and column == 2) or (row == 3 and column == 3):
-    msg += " or (E)ast"
-
-#tiles that allow travel west
-if (row == 1 and column == 1) or (row == 3 and column == 1) or (row == 3 and column == 3):
-    msg += " or (W)est"
-
-print(msg)
-# print("You can travel: (N)orth")
-# direction = input("Direction:")
-# if direction != "N":
-#     print("Not a valid direction!")
-# else:
-#     row = 2
-#     column = 2
+while True:
+    direct = "You can travel: "
+    # tiles that allow travel north
+    if row == 1 or (row == 2 and column == 1) or (row == 2 and column == 3)  :
+        direct += "(N)orth"                          
+    #tiles that allow travel south
+    if row != 1 and not(row == 3 and column == 2):
+        if len(direct) > base_length:
+            direct += " or "
+        direct += "(S)outh"                         
+    #tiles that allow travel east
+    if (row == 2 and column == 1) or (row == 3 and column == 1) or (row == 3 and column == 2):
+        if len(direct) > base_length:
+            direct += " or "
+        direct += "(E)ast"                           
+    #tiles that allow travel west
+    if (row == 2 and column == 2) or (row == 3 and column == 2) or (row == 3 and column == 3):
+        if len(direct) > base_length:
+            direct += " or "
+        direct += "(W)est"                          
+    print(direct)
+    #innslegin átt frá notanda, gerð að lágum staf svo há/lágstafir skipti ekki máli.
+    direction = input("Direction: ")
+    lower_direction = direction.lower()
+    #kanna hvort innslegin stafur(átt) sé í lagi, þ.e.
+    #stemmi við þá átt sem er heimilt að fara í.
+    compareString = "(" + lower_direction + ")"
+    if compareString not in direct.lower() :
+        print("Not a valid direction!")
+    else:
+        #breyta staðsetningu út frá þeirri átt sem var valin.
+        #print("röð, dálkur fyrir breytingu: ", row, "", column)
+        if  lower_direction == "n": 
+            row += 1
+        elif lower_direction == "s": 
+            row -= 1
+        elif lower_direction == "e": 
+            column += 1
+        elif lower_direction == "w": 
+            column -= 1
+    if row == 1 and column == 3:
+        print("Victory!")
+        break
+    #tæma strenginn svo safnist ekki upp í hverri umferð þær áttir sem notandi má slá inn
+    direct = str()
+    #print("röð, dálkur eftir breytingu: ", row, "", column)
+  
