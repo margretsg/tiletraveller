@@ -14,22 +14,22 @@ while True:
     # tiles that allow travel north
     if row == 1 or (row == 2 and column == 1) or (row == 2 and column == 3)  :
         direct += "(N)orth"                          
-    #tiles that allow travel south
-    if row != 1 and not(row == 3 and column == 2):
-        if len(direct) > base_length:
-            direct += " or "
-        direct += "(S)outh"                         
     #tiles that allow travel east
     if (row == 2 and column == 1) or (row == 3 and column == 1) or (row == 3 and column == 2):
         if len(direct) > base_length:
             direct += " or "
-        direct += "(E)ast"                           
+        direct += "(E)ast"                
+    #tiles that allow travel south
+    if row != 1 and not(row == 3 and column == 2):
+        if len(direct) > base_length:
+            direct += " or "
+        direct += "(S)outh"                                   
     #tiles that allow travel west
     if (row == 2 and column == 2) or (row == 3 and column == 2) or (row == 3 and column == 3):
         if len(direct) > base_length:
             direct += " or "
         direct += "(W)est"                          
-    print(direct)
+    print(direct + ".")
     #input from user, lowercased so it does not matter if it is capitalised or not when compared to allowed directions.
     direction = input("Direction: ")
     lower_direction = direction.lower()
@@ -37,9 +37,24 @@ while True:
     compareString = "(" + lower_direction + ")"
     if compareString not in direct.lower() :
         print("Not a valid direction!")
-    else:
+        while compareString not in direct.lower():
+            direction = input("Direction: ")
+            lower_direction = direction.lower()
+            compareString = "(" + lower_direction + ")"
+        else:
         #change position based on chosen direction.
         #print("row, column before change: ", row, "", column)
+            if  lower_direction == "n": 
+                row += 1
+            elif lower_direction == "s": 
+                row -= 1
+            elif lower_direction == "e": 
+                column += 1
+            elif lower_direction == "w": 
+                column -= 1
+    else:
+    #change position based on chosen direction.
+    #print("row, column before change: ", row, "", column)
         if  lower_direction == "n": 
             row += 1
         elif lower_direction == "s": 
